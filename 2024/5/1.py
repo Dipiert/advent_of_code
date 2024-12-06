@@ -1,5 +1,6 @@
 # part2 missing
 from pathlib import Path
+from collections import defaultdict
 
 input = """47|53
 97|13
@@ -39,7 +40,7 @@ def get_file_as_str(path='input.txt'):
         
     return file
 
-input = get_file_as_str()
+#input = get_file_as_str()
 
 def rules_and_updates(lines):
     rules = []
@@ -78,7 +79,6 @@ def is_valid_update(u, relevant_rules):
     numbers = u.split(",")
     valid = True
     for n in numbers:
-        #print(f"Working with {n}")
         pre = []
         post = []
         for r in relevant_rules:
@@ -89,47 +89,60 @@ def is_valid_update(u, relevant_rules):
         if ordered == []:
             if n not in post:
                 ordered.append(n)
-                #print("Placed first")
                 continue
         else:
             for on in ordered:
                 for r in relevant_rules:
                     if n + "|" + on in relevant_rules:
-                        #print(f"Invalid update. Rule {r} doesn't allow to put {n} before {on}")
                         return False
             ordered.append(n)
-            #print(f"Added {n} to ordered: {ordered}")
     return len(numbers) == len(ordered)
                         
-            
-            
-        # for _pre, _post in zip(pre, post):
-        #     if n == _post:
-        #         if _pre in numbers:
-        #             print("")
-        #             valid = False
-        #             break
-        #if ordered == [] and not post:
-        #    ordered.append(n)
-        #    print(ordered)
-
-if __name__ == '__main__':
-    valid_update = []
-    lines = input.split("\n")
-    rules, updates = rules_and_updates(lines)
-    #relevant_rules = get_relevant_rules(rules, updates)
-    for u in updates:
-        relevant_rules = get_relevant_rules_for_update(rules, u)
-        #print(len(relevant_rules))
-        #print(relevant_rules)
-        valid = is_valid_update(u, relevant_rules)
-        if valid:
-            valid_update.append(u)
-            
+def first_part(valid_updates):
     answer = 0
-    for vu in valid_update:
+    for vu in valid_updates:
         numbers = vu.split(",")
         numbers = [int(n) for n in numbers]
         answer += numbers[len(numbers) // 2]
-    print(answer)                    
+    print(answer)  
+
+def order(u, relevant_rules):
+    ordered = []
+    numbers = u.split(",")
+    rules_per_n = defaultdict(list)
+    #for n in numbers:
+    #    if ordered == []:
+    #        ordered.append(n)
+    #        continue
+    for r in relevant_rules:
+        if n in r:
+            rules_per_n[n].append(r)
+            #pre = r.split("|")[0]
+            #post = r.split("|")[1]
+            #print(f"Rules where {n} is: {r}")
+            #if n == pre and post in ordered:
+            #    ordered.insert(ordered.index(post), n)
+            #if n == post and pre in ordered:
+            #    ordered.insert(ordered.index(pre), n)
+    from pprint import pprint as pp
+    pp(rules_per_n)
+    #print(ordered)
+
+
+    #print(u, relevant_rules)
+
+if __name__ == '__main__':
+    valid_updates = []
+    lines = input.split("\n")
+    rules, updates = rules_and_updates(lines)
+    for u in updates:
+        relevant_rules = get_relevant_rules_for_update(rules, u)
+        valid = is_valid_update(u, relevant_rules)
+        if valid:
+            valid_updates.append(u)
+        else:
+            order(u, relevant_rules)
+    #first_part(valid_updates)
+    #second_part(to_order, relevant_rules)
+                 
         
