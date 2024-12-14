@@ -88,9 +88,7 @@ def regions(input, plants):
             view.append(row)
                     #input_view = input[i][:j] + '.' + input[i][j+1:]
                     #input_view[i][j] = '.'
-        #plant_regions[p] = input_view
-        pprint(view)
-        print()
+        plant_regions[p] = view
 
     # for each plant, delete everything which is not it.
 
