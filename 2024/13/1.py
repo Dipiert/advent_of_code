@@ -66,8 +66,8 @@ def parse_lines(lines):
 def calc_button_presses(c):
     
     x, y = symbols('x y')
-    eq1 = Eq( c["A"][0]*x + c["B"][0]*y, c["Prize"][0])
-    eq2 = Eq( c["A"][1]*x + c["B"][1]*y, c["Prize"][1] )
+    eq1 = Eq( c["A"][0]*x + c["B"][0]*y, c["Prize"][0] + 10000000000000)
+    eq2 = Eq( c["A"][1]*x + c["B"][1]*y, c["Prize"][1] + 10000000000000)
     
     solution = solve((eq1, eq2), (x, y))
     if solution[x] != int(solution[x]) or  solution[y] != int(solution[y]):
